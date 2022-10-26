@@ -2,7 +2,6 @@ import myriad_class
 import asyncio
 import websockets
 import json
-import logging
 import signal
 import sys
 
@@ -13,8 +12,6 @@ def sigint_handler(signal, frame):
 
 
 signal.signal(signal.SIGINT, sigint_handler)
-
-logging.basicConfig(filename="brownie.log", encoding="utf-8", level=logging.DEBUG)
 
 # “cmd –0\r” Get Current Status Information
 # “cmd –1\r” Get Current Status Information
@@ -117,7 +114,7 @@ async def handler(websocket):
                         myriadAmp.send_command(cmd)
                     await websocket.send(json.dumps(get_myriad_values("settings")))
         except websockets.exceptions.ConnectionClosedOK as e:
-            logging.error(e)
+            await asyncio.sleep(0.01)
 
 
 async def main():
